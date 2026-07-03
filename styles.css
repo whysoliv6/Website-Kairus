@@ -20,7 +20,9 @@
 }
 
 *{ box-sizing:border-box; }
-html{ scroll-behavior:smooth; }
+html.lenis{ height:auto; }
+html.lenis body{ height:auto; }
+html.lenis.lenis-smooth{ scroll-behavior:auto !important; }
 body{
   margin:0;
   background:var(--bg);
@@ -28,6 +30,20 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;
   line-height:1.5;
   overflow-x:hidden;
+}
+
+/* Scroll-reveal (Framer Motion-style fade + rise on scroll into view) */
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .7s cubic-bezier(.22,.68,0,1), transform .7s cubic-bezier(.22,.68,0,1);
+}
+.reveal.is-visible{
+  opacity:1;
+  transform:translateY(0);
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
 }
 
 h1,h2,h3,.big-word,.hero-title,.section-title,.connect-heading{
@@ -125,9 +141,9 @@ button{ font-family:inherit; cursor:pointer; }
 
 /* Ribbons */
 .ribbons{ position:relative; padding:36px 0; overflow:hidden; }
-.ribbon{ overflow:hidden; white-space:nowrap; padding:16px 0; font-family:'Cal Sans',sans-serif; font-size:clamp(1.2rem,2.6vw,2rem); transform:rotate(-2deg); margin:-6px 0; }
+.ribbon{ overflow:hidden; white-space:nowrap; padding:18px 0; font-family:'Cal Sans',sans-serif; font-size:clamp(1.2rem,2.6vw,2rem); transform:rotate(6deg); margin:-2px 0; }
 .ribbon-dark{ background:var(--dark-2); color:#fff; }
-.ribbon-orange{ background:var(--orange); color:#fff; transform:rotate(2deg); }
+.ribbon-orange{ background:var(--orange); color:#fff; transform:rotate(-6deg); }
 .ribbon-track{ display:inline-block; animation:scroll-left 28s linear infinite; }
 .ribbon-track.reverse{ animation:scroll-right 28s linear infinite; }
 .ribbon-track span{ padding-right:0; }
@@ -314,6 +330,15 @@ button{ font-family:inherit; cursor:pointer; }
 .contact-form input:focus, .contact-form textarea:focus{ outline:none; border-color:var(--orange); }
 .contact-form button{ align-self:flex-start; margin-top:10px; }
 .form-note{ color:#59d16b; font-size:13px; margin:0; min-height:1em; }
+
+.contact-email-marquee{
+  position:relative; z-index:1; overflow:hidden; white-space:nowrap;
+  border-top:1px solid rgba(255,255,255,.12); margin:10px 40px 40px; padding-top:26px;
+}
+.contact-email-marquee .ribbon-track{ display:inline-block; animation:scroll-left 16s linear infinite; }
+.contact-email-marquee span{
+  font-family:'Cal Sans',sans-serif; font-size:clamp(1.4rem,4vw,2.4rem); color:#57534e;
+}
 
 /* Footer */
 .site-footer{ padding:50px 24px 30px; }
