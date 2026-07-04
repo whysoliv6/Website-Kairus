@@ -134,3 +134,48 @@ contactForm?.addEventListener('submit', (e) => {
   contactForm.reset();
   window.open(link, '_blank');
 });
+
+// Cookie consent banner
+(function () {
+  const STORAGE_KEY = 'kairusCookieConsent';
+
+  const banner = document.createElement('div');
+  banner.className = 'cookie-banner';
+  banner.setAttribute('role', 'dialog');
+  banner.setAttribute('aria-live', 'polite');
+  banner.setAttribute('aria-label', 'Consentimento de cookies');
+  banner.innerHTML = `
+    <p>Usamos cookies para o site funcionar e para entender, de forma anônima, como ele é usado. Você pode aceitar todos ou manter só os essenciais. Saiba mais na <a href="politica-de-privacidade.html">Política de Privacidade</a>.</p>
+    <div class="cookie-actions">
+      <button type="button" class="btn btn-ghost" data-cookie-choice="essential">Somente essenciais</button>
+      <button type="button" class="btn btn-light" data-cookie-choice="all">Aceitar todos</button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  function showBanner() {
+    banner.classList.add('visible');
+  }
+
+  function hideBanner() {
+    banner.classList.remove('visible');
+  }
+
+  function saveChoice(choice) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ choice, date: new Date().toISOString() }));
+    hideBanner();
+  }
+
+  banner.querySelectorAll('[data-cookie-choice]').forEach((btn) => {
+    btn.addEventListener('click', () => saveChoice(btn.dataset.cookieChoice));
+  });
+
+  if (!localStorage.getItem(STORAGE_KEY)) {
+    showBanner();
+  }
+
+  document.getElementById('cookiePrefsLink')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showBanner();
+  });
+})();
