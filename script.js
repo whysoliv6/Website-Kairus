@@ -117,11 +117,14 @@ contactForm?.addEventListener('submit', (e) => {
   const mensagem = contactForm.message.value.trim();
 
   if (SHEET_ENDPOINT) {
-    fetch(SHEET_ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify({ nome, whatsapp, mensagem, origem: 'site' })
-    }).catch(() => {});
+    const payload = JSON.stringify({ nome, whatsapp, mensagem, origem: 'site' });
+    // sendBeacon (not fetch) because the tab is about to navigate to WhatsApp —
+    // a normal fetch gets cancelled mid-flight when the page unloads.
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(SHEET_ENDPOINT, new Blob([payload], { type: 'text/plain;charset=UTF-8' }));
+    } else {
+      fetch(SHEET_ENDPOINT, { method: 'POST', mode: 'no-cors', keepalive: true, body: payload }).catch(() => {});
+    }
   }
 
   const texto = `Olá! Meu nome é ${nome}.\nMeu WhatsApp: ${whatsapp}\n\nSobre o projeto: ${mensagem}`;
