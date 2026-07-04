@@ -102,23 +102,11 @@ tabs.forEach(tab => {
   });
 });
 
-// Testimonial slider
-const slides = document.querySelectorAll('.testi-slide');
-let testiIndex = 0;
-function showSlide(i){
-  slides.forEach(s => s.classList.remove('active'));
-  testiIndex = (i + slides.length) % slides.length;
-  slides[testiIndex].classList.add('active');
-}
-document.getElementById('testiPrev')?.addEventListener('click', () => showSlide(testiIndex - 1));
-document.getElementById('testiNext')?.addEventListener('click', () => showSlide(testiIndex + 1));
-setInterval(() => showSlide(testiIndex + 1), 6000);
-
 // Contact form (no backend — demo confirmation only)
 const contactForm = document.getElementById('contactForm');
 const formNote = document.getElementById('formNote');
 contactForm?.addEventListener('submit', (e) => {
   e.preventDefault();
-  formNote.textContent = "Thanks! We'll get back to you within 1-2 business days.";
+  formNote.textContent = "Recebemos sua mensagem! Retornamos em até 1-2 dias úteis.";
   contactForm.reset();
 });
