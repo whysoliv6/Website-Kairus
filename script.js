@@ -102,11 +102,32 @@ tabs.forEach(tab => {
   });
 });
 
-// Contact form (no backend — demo confirmation only)
+// Contact form — logs the lead to a Google Sheet (if configured) then hands off to WhatsApp
+const KAIRUS_WHATSAPP = '5585998333612';
+// Paste the URL from your Google Apps Script deployment (see docs/GOOGLE_SHEETS_SETUP.md).
+// Leave empty to skip sheet logging and go straight to WhatsApp.
+const SHEET_ENDPOINT = '';
+
 const contactForm = document.getElementById('contactForm');
 const formNote = document.getElementById('formNote');
 contactForm?.addEventListener('submit', (e) => {
   e.preventDefault();
-  formNote.textContent = "Recebemos sua mensagem! Retornamos em até 1-2 dias úteis.";
+  const nome = contactForm.name.value.trim();
+  const whatsapp = contactForm.whatsapp.value.trim();
+  const mensagem = contactForm.message.value.trim();
+
+  if (SHEET_ENDPOINT) {
+    fetch(SHEET_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ nome, whatsapp, mensagem, origem: 'site' })
+    }).catch(() => {});
+  }
+
+  const texto = `Olá! Meu nome é ${nome}.\nMeu WhatsApp: ${whatsapp}\n\nSobre o projeto: ${mensagem}`;
+  const link = `https://wa.me/${KAIRUS_WHATSAPP}?text=${encodeURIComponent(texto)}`;
+
+  formNote.textContent = 'Abrindo o WhatsApp...';
   contactForm.reset();
+  window.open(link, '_blank');
 });
