@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://whysoliv6.github.io/template-2/sitemap.xml
+Sitemap: https://whysoliv6.github.io/Website-Kairus/sitemap.xml
